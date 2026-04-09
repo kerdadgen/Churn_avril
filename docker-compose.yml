@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: churn-predictor
+    ports:
+      - "8501:8501"
+    environment:
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - STREAMLIT_SERVER_HEADLESS=true
+    volumes:
+      - .:/app
+    restart: unless-stopped
+    networks:
+      - churn-network
+
+  # (Optionnel) API Flask si vous voulez l'exposer aussi
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: churn-api
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_APP=app.py
+    volumes:
+      - .:/app
+    restart: unless-stopped
+    networks:
+      - churn-network
+    profiles:
+      - api  # Lancer avec: docker-compose --profile api up
+
+networks:
+  churn-network:
+    driver: bridge

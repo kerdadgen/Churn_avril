@@ -1,0 +1,41 @@
+name: 🚀 Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 📝 Generate changelog
+        id: changelog
+        run: |
+          echo "## 🎉 Release Notes" > changelog.md
+          echo "" >> changelog.md
+          echo "### Version: ${{ github.ref }}" >> changelog.md
+          echo "" >> changelog.md
+          echo "### Changes:" >> changelog.md
+          git log --oneline -10 >> changelog.md
+      
+      - name: 🏷️ Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body_path: changelog.md
+          draft: false
+          prerelease: false
+      
+      - name: 📢 Notification
+        run: |
+          echo "✅ Release ${{ github.ref }} créée avec succès!"

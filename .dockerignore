@@ -1,0 +1,52 @@
+# Fichiers Git
+.git
+.gitignore
+
+# Environnements Python
+venv/
+env/
+.venv
+*.egg-info/
+dist/
+build/
+
+# Cache Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Fichiers temporaires
+*.tmp
+*.log
+.env
+.env.local
+
+# CI/CD
+.github/
+
+# Tests
+.coverage
+htmlcov/
+
+# Node modules (si pertinent)
+node_modules/
+
+# Documentation
+docs/
+README.md
+GUIDE_STREAMLIT.md
+
+# Autre
+.streamlit/
